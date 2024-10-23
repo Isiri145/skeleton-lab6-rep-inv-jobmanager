@@ -265,8 +265,51 @@ public class JobManager {
      *
      * @throws AssertionError if the representation invariant is violated
      */
-    public void checkRep() {
+  public void checkRep() {
         // TODO implement this method
         // DO NOT USE THE `assert` keyword; You must use `throw new AssertionError()`
-    }
+        for (Integer job : unassignedJobs){
+            if(job < 1 || job >n ){
+                throw new AssertionError();
+            }
+        }
+        Set<Integer> assignedJobs = new HashSet<>();
+        for( Robot robot : robotToJobs.keySet()){
+            TreeSet<Integer> robotJobs = robotToJobs.get(robot);
+            if(robot == null || robot.isNull()){
+                throw new AssertionError();
+            }
+            for(Integer job : robotJobs){
+                if(job<1 || job>n){
+                    throw new AssertionError();
+                }
+                if(unassignedJobs.contains(job)){
+                    throw new AssertionError();
+                }
+                if(!assignedJobs.add(job)){
+                    throw new AssertionError();
+                }
+            }
+           if(!robotJobs.isEmpty()){
+               Integer prevJob = null;
+               for(Integer job : robotJobs){
+                   if(prevJob != null && job <prevJob){
+                       throw new AssertionError();
+                   }
+                   prevJob = job;
+               }
+
+             }
+           }
+
+           Set<Integer> allJobs = new HashSet<>(unassignedJobs);
+        allJobs.addAll(assignedJobs);
+        for(int i = 1; i <= n; i++){
+            if(!allJobs.contains(i)){
+                throw new AssertionError();
+            }
+        }
+        }
+
+
 }
